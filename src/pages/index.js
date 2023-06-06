@@ -5,20 +5,31 @@ import styled from 'styled-components';
 
 const HomeStyles = styled.div`
   width: 100vw;
-  height: 60vh;
+  min-height: 100%;
 `;
 
 const Hero = styled.div`
   width: 100%;
-  height: 100%;
+  height: 60vh;
   position: relative;
   margin: 0;
   padding: 0;
   img {
+    width: 100%;
+    height: 60vh;
     position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
+  }
+  @media only screen and (max-width: 750px) {
+    top: 7rem;
+  }
+  @media only screen and (max-width: 400px) {
+    height: 50vh;
+    img {
+      height: 50vh;
+    }
   }
 `;
 
@@ -30,27 +41,34 @@ const Overlay = styled.div`
 `;
 
 const H1 = styled.h1`
-  margin: 30vmin 1rem 0;
+  max-width: 56vw;
+  position: absolute;
+  bottom: 2rem;
   color: #fff;
   font-size: 8vmin;
-  text-shadow: 3px 3px 10px black;
+  text-shadow: 0.3rem 0.3rem 1rem black;
   font-style: italic;
-  font-weight: bold;
+  font-weight: 700;
   @media only screen and (max-width: 700px) {
-    margin: 10rem 1rem;
     font-size: 4rem;
   }
-  @media screen only and (max-width: 400px) {
-    font-size: 2.22rem;
+  @media only screen and (max-width: 652px) {
+    max-width: 75vw;
+  }
+  @media only screen and (max-width: 400px) {
+    font-size: 2.45rem;
   }
 `;
 
-const Container = styled.div`
+const Grid = styled.div`
   width: 100vw;
-  margin: 5vh auto;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
+  margin: 7rem auto 5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(auto, 1fr));
+  justify-items: center;
+  @media only screen and (max-width: 652px) {
+    grid-template-columns: repeat(1, minmax(auto, 1fr));
+  }
   @media screen only and (max-width: 400px) {
     .homeContent {
       font-size: 1.5rem;
@@ -60,30 +78,30 @@ const Container = styled.div`
 
 const Pages = styled(Link)`
   text-decoration: none;
-  width: 250px;
-  height: 250px;
-  margin: 2rem;
-  padding: 1rem;
-  border: 2px solid lightgray;
-  box-shadow: 3px 3px 10px black;
+  max-width: 40rem;
+  height: 25rem;
+  margin: 1rem;
+  padding: 0 2rem;
+  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  &:hover {
+    box-shadow: 0.7px 0.7px 2.2px rgba(0, 0, 0, 0.02),
+      1.7px 1.7px 5.3px rgba(0, 0, 0, 0.028),
+      3.1px 3.1px 10px rgba(0, 0, 0, 0.035),
+      5.6px 5.6px 17.9px rgba(0, 0, 0, 0.042),
+      10.4px 10.4px 33.4px rgba(0, 0, 0, 0.05),
+      25px 25px 80px rgba(0, 0, 0, 0.07);
+  }
 `;
 
 const H2 = styled.h2`
-  font-family: 'Canto', 'Palatino', 'Gill Sans', 'Gill Sans MT', 'Calibri',
-    'Trebuchet MS', sans-serif;
   font-style: italic;
   font-weight: bold;
   font-size: 2.5rem;
   text-align: center;
   align-self: center;
-`;
-
-const Paragraph = styled.p`
-  text-align: center;
-  font-size: 1.5rem;
 `;
 
 export default function HomePage() {
@@ -119,8 +137,6 @@ export default function HomePage() {
               {...home.image}
               alt="Powder Ridge Homes"
               style={{
-                width: '100%',
-                height: '60vh',
                 objectFit: 'cover',
                 auto: 'format',
               }}
@@ -129,14 +145,13 @@ export default function HomePage() {
               <H1>{home.welcome}</H1>
             </Overlay>
           </Hero>
-          <Container>
+          <Grid>
             {home.contents.map((info) => (
               <Pages to={info.contentURL}>
-                <H2>{info.heading}</H2>
-                <Paragraph>{info.content}</Paragraph>
+                <H2>{info.content}</H2>
               </Pages>
             ))}
-          </Container>
+          </Grid>
         </HomeStyles>
       ))}
     </>

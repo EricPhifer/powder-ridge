@@ -8,6 +8,7 @@ import Navigation from './Navigation';
 const SiteStyles = styled.div`
   width: 100vw;
   min-height: 100vh;
+  position: relative;
   padding-bottom: 4rem;
   @media only screen and (max-width: 950px) {
     padding-bottom: 6.3rem;

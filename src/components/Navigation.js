@@ -3,9 +3,8 @@ import { Link } from 'gatsby';
 import styled from 'styled-components';
 
 const Nav = styled.nav`
-  background-color: #fff;
-  padding: 1rem 3rem;
-  box-shadow: 0 3px 10px black;
+  background-color: transparent;
+  padding: 0 3rem;
   position: relative;
   z-index: 1;
   ul {
@@ -103,11 +102,10 @@ const Mobile = styled.nav`
     display: none;
   }
   width: 100vw;
-  height: 5rem;
+  height: 7rem;
   position: fixed;
   background-color: #fff;
   padding: 1rem 3rem;
-  box-shadow: 0 3px 10px black;
   z-index: 1;
   a {
     color: var(--green);
@@ -176,7 +174,7 @@ const Mobile = styled.nav`
   }
   #menu {
     height: 100vh;
-    width: 75vw;
+    width: 50vw;
     margin: 0;
     position: fixed;
     top: 0;
@@ -189,6 +187,9 @@ const Mobile = styled.nav`
     transform-origin: 0% 0%;
     transform: translate(-100%, 0);
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+    @media only screen and (max-width: 400px) {
+      width: 75vw;
+    }
   }
   #menu li {
     transition-delay: 2s;
