@@ -2,8 +2,8 @@ import { createGlobalStyle } from 'styled-components';
 
 const Typography = createGlobalStyle`
   html {
-    font-family: Constantia, 'Lucida Bright', Lucidabright, 'Lucida Serif', Lucida,
-    'DejaVu Serif', 'Bitstream Vera Serif', 'Liberation Serif', Georgia, serif;    
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri',
+    'Trebuchet MS', sans-serif;
     color: #000;
   }
 

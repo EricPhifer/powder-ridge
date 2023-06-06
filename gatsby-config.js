@@ -16,7 +16,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-sanity',
       options: {
-        projectId: 'hgs9sguf',
+        projectId: '1oaoktsj',
         dataset: 'production',
       },
     },
@@ -26,7 +26,6 @@ module.exports = {
     'gatsby-plugin-styled-components',
     'gatsby-plugin-google-gtag',
     'gatsby-plugin-sitemap',
-    'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
@@ -38,7 +37,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-sanity-image',
       options: {
-        projectId: 'hgs9sguf',
+        projectId: '1oaoktsj',
         dataset: 'production',
       },
     },
