@@ -1,66 +1,73 @@
-import { graphql } from 'gatsby';
-import React from 'react';
-import styled from 'styled-components';
-import SEO from '../components/SEO';
+import { defaultComponents, PortableText } from '@portabletext/react'
+import { graphql, useStaticQuery } from 'gatsby'
+import React from 'react'
+import styled from 'styled-components'
+import Seo from '../components/seo'
 
 const PolicyStyles = styled.div`
-  max-width: 700px;
-  margin: 0 auto;
   word-wrap: break-word;
-  padding-left: 5rem;
-  padding-right: 5rem;
+  p {
+    padding: 0.5rem 0;
+  }
+  .overlord {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+  }
+  p:first-child {
+    padding: 0;
+    margin: 0;
+  }
+  h1 {
+    text-align: center;
+  }
+  .policyContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
   .updateDate {
     text-align: center;
   }
-  @media (max-width: 600px) {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  // change from 7rem for banner
+  @media only screen and (max-width: 900px) {
+    padding-top: 9rem;
   }
-`;
+`
 
-function countOrder(policies) {
-  const counts = policies.map((policy) => policy);
-  const sortedOrder = Object.values(counts).sort((a, b) => a.order - b.order);
-  return sortedOrder;
-}
-
-export default function PrivacyPolicy({ data }) {
-  const policies = data.policies.nodes;
-  const order = countOrder(policies);
-  return (
-    <>
-      <SEO title="Privacy Policy" />
-      <PolicyStyles>
-        <p className="updateDate">Last updated: April 22, 2021</p>
-        {order.map((policy) => (
-          <div key={policy._id}>
-            <br />
-            <h1>{policy.title}</h1>
-            <br />
-            <div>
-              {policy.contents.map((content) => (
-                <div>
-                  <div>{content}</div>
-                  <br />
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </PolicyStyles>
-    </>
-  );
-}
-
-export const query = graphql`
-  query {
-    policies: allSanityPrivacyPolicy {
-      nodes {
-        id
-        order
-        title
-        contents
+export default function PrivacyPolicy() {
+  const { policies } = useStaticQuery(graphql`
+    query {
+      policies: allSanityPrivacypolicy {
+        nodes {
+          id
+          title
+          _rawContent
+        }
       }
     }
-  }
-`;
+  `)
+  const { nodes } = policies
+  return (
+    <>
+      <Seo title="Privacy Policy" />
+      <PolicyStyles>
+        <div className="overlord">
+          {nodes.map(policy => (
+            <section key={policy.id}>
+              <h1>{policy.title}</h1>
+              <section className="policyContainer">
+                <PortableText
+                  value={policy._rawContent}
+                  components={defaultComponents}
+                  className="answer flex"
+                />
+              </section>
+            </section>
+          ))}
+        </div>
+      </PolicyStyles>
+    </>
+  )
+}

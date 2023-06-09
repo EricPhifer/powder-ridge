@@ -1,280 +1,344 @@
-import React from 'react';
-import { Link } from 'gatsby';
+import { Link, graphql, useStaticQuery } from 'gatsby';
+import SanityImage from 'gatsby-plugin-sanity-image';
+import * as React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
+const Container = styled.div`
+  width: 100vw;
+  height: 7rem;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #fff;
+  z-index: 10000;
+`;
+
 const Nav = styled.nav`
-  background-color: transparent;
-  padding: 0 3rem;
-  position: relative;
-  z-index: 1;
-  ul {
-    margin: 0;
-    padding: 0;
+  width: 100vw;
+  height: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  .contact {
+    width: 45%;
+    height: 100%;
     display: flex;
-    flex-flow: row nowrap;
     align-items: center;
-    justify-content: space-between;
-    .logoLeft {
-      justify-self: start;
+    justify-content: center;
+    font-size: 2.25rem;
+    color: var(--white);
+    padding: 2rem;
+    background: var(--green);
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      background: var(--white);
+      color: var(--black);
     }
-    list-style: none;
-    font-variant: small-caps;
+    &:focus {
+      background: var(--white);
+      color: var(--black);
+    }
   }
-  .logo {
-    width: 9rem;
-    height: 7rem;
-    margin: 1rem 0;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
+  @media only screen and (max-width: 815px) {
+    display: none;
   }
+`;
+
+const Img = styled(Link)`
+  width: 20rem;
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  @media only screen and (max-width: 815px) {
+    width: 5rem;
+  }
+`;
+
+const List = styled.ul`
+  width: 75%;
+  height: 100%;
+  list-style-type: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
+const Item = styled.li`
   a {
-    font-size: 1.65rem;
     text-decoration: none;
-    position: relative;
+    font-size: 2rem;
+    color: var(--black);
+    transition: all 0.3s ease-in-out;
     &:hover {
       color: var(--green);
     }
-    &:active {
-      color: var(--lightgreen);
+    &:focus {
+      color: var(--green);
     }
-    &:after {
-      content: '';
-      border-bottom: 2px solid black;
-      left: 50%;
-      position: absolute;
-      top: 110%;
-      transition: all 0.2s ease-in-out;
-      width: 0;
-    }
-    &:hover:after {
-      left: 0;
-      width: 100%;
-    }
-    &[aria-current='page'] {
-      color: var(--lightgreen);
-    }
-  }
-
-  @media (max-width: 900px) {
-    .logo {
-      width: 7rem;
-      height: 5rem;
-    }
-    ul {
-      gap: 0.5rem;
-    }
-    a {
-      font-size: 1.75rem;
-    }
-  }
-  @media (max-width: 400px) {
-    .logo {
-      width: 7rem;
-      height: 5rem;
-    }
-    ul {
-      gap: 0;
-      line-height: 0.9;
-    }
-    a {
-      font-size: 1.5rem;
-    }
-  }
-  @media (max-width: 374px) and (min-width: 320px) {
-    ul {
-      gap: 0;
-      line-height: 0.7;
-    }
-    a {
-      font-size: 1.2rem;
-    }
-  }
-  /* Hide menu on small screens */
-  @media only screen and (max-width: 749px) {
-    display: none;
   }
 `;
 
-const Mobile = styled.nav`
-  /* Show compressed menu on small screens */
-  @media only screen and (min-width: 750px) {
-    display: none;
+// Mobile Styling & Responsive Design
+const Mobile = styled.div`
+  display: none;
+  @media only screen and (max-width: 815px) {
+    display: block;
   }
-  width: 100vw;
-  height: 7rem;
-  position: fixed;
-  background-color: #fff;
-  padding: 1rem 3rem;
-  z-index: 1;
-  a {
-    color: var(--green);
-    font-size: 1.5rem;
-  }
-  a[aria-current='page'] {
-    color: var(--lightgreen);
-  }
-  .logo {
-    width: 9rem;
-    height: 7rem;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
+`;
 
-  #menuToggle {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 25px;
-    left: 25px;
-    z-index: 1;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  #menuToggle input {
-    display: flex;
-    width: 40px;
-    height: 32px;
-    position: absolute;
-    cursor: pointer;
-    opacity: 0;
-    z-index: 2;
-  }
-  #menuToggle span {
+const MenuToggle = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 2rem;
+  right: 2.5rem;
+  z-index: 10002;
+  -webkit-user-select: none;
+  user-select: none;
+  span {
     display: flex;
     position: relative;
-    width: 29px;
-    height: 2px;
-    margin-bottom: 5px;
-    border-radius: 3px;
-    z-index: 1;
-    transform-origin: 5px 0;
-    background: #000;
+    width: 5rem;
+    height: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.3rem;
+    box-shadow: 0.3rem 0.3rem 0.5rem var(--black);
+    z-index: 10002;
+    transform-origin: 0.5rem 0;
+    background: var(--green);
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
       background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.55s ease;
   }
-  #menuToggle span:first-child {
+  span:first-child {
     transform-origin: 0% 0%;
   }
-  #menuToggle span:nth-last-child(2) {
+  span:nth-last-child(2) {
     transform-origin: 0% 100%;
   }
-  #menuToggle input:checked ~ span {
+  input:checked ~ span {
     opacity: 1;
-    transform: rotate(45deg) translate(-3px, -1px);
-    background: #36383f;
+    transform: rotate(45deg) translate(-1rem, 0);
+    box-shadow: none;
   }
-  #menuToggle input:checked ~ span:nth-last-child(3) {
+  input:checked ~ span:nth-last-child(2) {
     opacity: 0;
     transform: rotate(0deg) scale(0.2, 0.2);
   }
-  #menuToggle input:checked ~ span:nth-last-child(2) {
-    transform: rotate(-45deg) translate(0, -1px);
+  input:checked ~ span:nth-last-child(3) {
+    transform: rotate(-45deg) translate(-1.65rem, 0);
   }
-  #menu {
-    height: 100vh;
-    width: 50vw;
-    margin: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    background-color: #fff;
-    box-shadow: 0 0 10px #85888c;
-    transform-origin: 0% 0%;
-    transform: translate(-100%, 0);
-    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
-    @media only screen and (max-width: 400px) {
-      width: 75vw;
-    }
-  }
-  #menu li {
-    transition-delay: 2s;
-  }
-  #menuToggle input:checked ~ ul {
+  input:checked ~ #menu {
     transform: none;
   }
-  ul {
-    list-style-type: none;
-    li {
-      padding: 3rem 1rem;
+`;
+
+const MenuInput = styled.input`
+  display: flex;
+  width: 5rem;
+  height: 3.2rem;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 10003;
+  bottom: 0;
+  right: 0;
+`;
+
+const MenuContainer = styled.div`
+  width: 50%;
+  height: 100%;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  box-shadow: 0 0 1rem #85888c;
+  transform-origin: 0% 0%;
+  transform: translate(100%, 0%);
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  @media only screen and (max-width: 600px) {
+    width: 75%;
+  }
+  li {
+    transition-delay: 2s;
+  }
+`;
+
+const MobileNav = styled.nav`
+  width: 50vw;
+  height: 100%;
+  background-color: var(--white);
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  .contact {
+    position: absolute;
+    bottom: 0;
+    font-size: 2rem;
+    color: var(--white);
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+    background: var(--green);
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      background: var(--white);
+      color: var(--green);
     }
+    &:focus {
+      background: var(--white);
+      color: var(--green);
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
+`;
+
+const MobileList = styled.ul`
+  width: 100%
+  height: 100%;
+  list-style-type: none;
+  max-width: 75%;
+  display: flex;
+  flex-flow: column wrap;
+  margin: 20% auto 0;
+  padding: 0;
+`;
+
+const MobileItem = styled.li`
+  padding: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--white);
+  a {
+    font-size: 2rem;
+    color: var(--black);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    &:hover {
+      border-bottom: var(--black);
+    }
+    &[aria-current='page'] {
+      border-bottom: var(--black);
+    }
+  }
+  @media only screen and (max-width: 325px) {
     a {
-      text-decoration: none;
-      text-transform: uppercase;
-    }
-    a:hover {
-      opacity: 0.5;
+      font-size: 1.8rem;
     }
   }
 `;
 
-export default function Navigation() {
+export default function StoryNav() {
+  const { navigation } = useStaticQuery(graphql`
+    query {
+      navigation: allSanityNavigation {
+        nodes {
+          id
+          alt
+          login
+          loginlink
+          logo {
+            asset {
+              id
+            }
+            ...ImageWithPreview
+          }
+          navlinks {
+            _key
+            pagename
+            pagelink
+          }
+        }
+      }
+    }
+  `);
+  const { nodes } = navigation;
+  const [checked, setChecked] = useState(false || '');
   return (
     <>
-      <Nav>
-        <ul>
-          <li className="logoLeft">
-            <Link to="/">
-              <div className="logo" />
-            </Link>
-          </li>
-          <li>
-            <a href="https://powderridgegrandmesa.com/faqs">FAQs</a>
-          </li>
-          <li>
-            <a href="https://powderridgegrandmesa.com/ccrs">CCRs</a>
-          </li>
-          <li>
-            <a href="https://powderridgegrandmesa.com/boardmembers">
-              Board Members
+      {nodes.map((node) => (
+        <Container key={node.id}>
+          <Nav>
+            <Img to="/">
+              {node.logo ? (
+                <SanityImage
+                  {...node.logo}
+                  alt={node.alt}
+                  styles={{
+                    objectFit: 'contain',
+                    auto: 'format',
+                  }}
+                />
+              ) : (
+                <div />
+              )}
+            </Img>
+            {node.navlinks.map((pagelink) => (
+              <List key={pagelink._key}>
+                <Item>
+                  <Link to={pagelink.pagelink}>{pagelink.pagename}</Link>
+                </Item>
+              </List>
+            ))}
+            <a href={node.loginlink} className="contact">
+              {node.login}
             </a>
-          </li>
-          <li>
-            <a href="https://powderridgegrandmesa.com/minutes">Board Minutes</a>
-          </li>
-          <li className="residentAccess">
-            <Link to="/">Resident Access</Link>
-          </li>
-        </ul>
-      </Nav>
-      <Mobile>
-        <div id="menuToggle">
-          <input type="checkbox" />
-          <span />
-          <span />
-          <span />
-          <ul id="menu">
-            <li className="logoLeft mobileLink">
-              <Link to="/">
-                <div className="logo" />
-              </Link>
-            </li>
-            <li className="mobileLink">
-              <a href="https://powderridgegrandmesa.com/faqs">FAQs</a>
-            </li>
-            <li className="mobileLink">
-              <a href="https://powderridgegrandmesa.com/ccrs">CCRs</a>
-            </li>
-            <li className="mobileLink">
-              <a href="https://powderridgegrandmesa.com/boardmembers">
-                Board Members
-              </a>
-            </li>
-            <li className="mobileLink">
-              <a href="https://powderridgegrandmesa.com/minutes">
-                Board Minutes
-              </a>
-            </li>
-            <li className="residentAccess">
-              <Link to="/">Resident Access</Link>
-            </li>
-          </ul>
-        </div>
-      </Mobile>
+          </Nav>
+          <Mobile>
+            <Img to="/">
+              {node.logo ? (
+                <SanityImage
+                  {...node.logo}
+                  alt={node.alt}
+                  styles={{
+                    objectFit: 'contain',
+                    auto: 'format',
+                  }}
+                />
+              ) : (
+                <div />
+              )}
+            </Img>
+            <MenuToggle>
+              <MenuInput
+                type="checkbox"
+                checked={checked}
+                onClick={() => {
+                  setChecked((old) => !old);
+                }}
+              />
+              <span />
+              <span />
+              <span />
+              <MenuContainer id="menu">
+                <MobileNav>
+                  <MobileList>
+                    {node.navlinks.map((pagelink) => (
+                      <MobileItem key={pagelink._key}>
+                        <Link to={pagelink.pagelink}>{pagelink.pagename}</Link>
+                      </MobileItem>
+                    ))}
+                  </MobileList>
+                  <a href={node.loginlink} className="contact">
+                    {node.login}
+                  </a>
+                </MobileNav>
+              </MenuContainer>
+            </MenuToggle>
+          </Mobile>
+        </Container>
+      ))}
     </>
   );
 }

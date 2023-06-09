@@ -1,95 +1,70 @@
-import { graphql, Link } from 'gatsby';
-import React from 'react';
-import styled from 'styled-components';
-import SEO from '../components/SEO';
+import { defaultComponents, PortableText } from '@portabletext/react'
+import { graphql, useStaticQuery } from 'gatsby'
+import React from 'react'
+import styled from 'styled-components'
+import Seo from '../components/seo'
 
 const TermStyles = styled.div`
-  max-width: 700px;
-  margin: 0 auto;
   word-wrap: break-word;
-  padding-left: 5rem;
-  padding-right: 5rem;
-  .updateDate {
+  p {
+    padding: 0.5rem 0;
+  }
+  .overlord {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+  }
+  p:first-child {
+    padding: 0;
+    margin: 0;
+  }
+  .termsContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .updateDate,
+  h1 {
     text-align: center;
   }
-  @media (max-width: 600px) {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  // change from 7rem for banner
+  @media only screen and (max-width: 900px) {
+    padding-top: 9rem;
   }
-  .call {
-    display: none;
-  }
-  @media (pointer: coarse) {
-    .call {
-      display: block;
+`
+
+export default function TermsConditions() {
+  const { terms } = useStaticQuery(graphql`
+    query {
+      terms: allSanityTermsconditions {
+        nodes {
+          id
+          title
+          _rawContent
+        }
+      }
     }
-  }
-`;
-
-function countOrder(terms) {
-  const counts = terms.map((term) => term);
-  const sortedOrder = Object.values(counts).sort((a, b) => a.order - b.order);
-  return sortedOrder;
-}
-
-export default function TermsConditions({ data }) {
-  const terms = data.terms.nodes;
-  const order = countOrder(terms);
-  const members = data.members.nodes;
-  const mappedMembers = members.map((member) => member);
+  `)
+  const { nodes } = terms
   return (
     <>
-      <SEO title="Terms &amp; Conditions" />
+      <Seo title="Terms &amp; Conditions" />
       <TermStyles>
-        <h1>Terms and Conditions</h1>
-        <p className="updateDate">Last updated: April 30, 2021</p>
-        {order.map((term) => (
-          <div key={term.id}>
-            <br />
-            <h1>{term.title}</h1>
-            <br />
-            <div>
-              {term.contents.map((content) => (
-                <div>
-                  <div>{content}</div>
-                  <br />
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-        <div>
-          <div>Powder Ridge Homeowners Association</div>
-          <div>P.O. Box 4574</div>
-          <div>Grand Junction, CO 81502 United States</div>
-          <div className="call">
-            <a href={`tel:${mappedMembers[2].phone}`}>Contact Us by Phone</a>
-          </div>
-          <div>
-            <Link to="/boardmembers">Contact Us by Email</Link>
-          </div>
+        <div className="overlord">
+          {nodes.map(term => (
+            <section key={term.id}>
+              <h1>{term.title}</h1>
+              <section className="termsContainer">
+                <PortableText
+                  value={term._rawContent}
+                  components={defaultComponents}
+                />
+              </section>
+            </section>
+          ))}
         </div>
       </TermStyles>
     </>
-  );
+  )
 }
-
-export const query = graphql`
-  query {
-    terms: allSanityTermsConditions {
-      nodes {
-        contents
-        id
-        order
-        title
-      }
-    }
-    members: allSanityBoardMembers {
-      nodes {
-        phone
-        email
-        id
-      }
-    }
-  }
-`;

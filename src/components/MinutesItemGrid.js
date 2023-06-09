@@ -159,11 +159,11 @@ export default function MinutesItemGrid() {
       }
     }
   `);
-  const allMinutes = minutes.nodes;
+  const { nodes } = minutes;
 
   return (
     <GridStyles>
-      {allMinutes.map((minute) => {
+      {nodes.map((minute) => {
         const endMDT = minute.endTime;
         const startMDT = minute.meetingStart;
         return (
@@ -256,8 +256,6 @@ export default function MinutesItemGrid() {
               </div>
               <br />
               <div className="content">Meeting ended at: {endMDT}</div>
-              {/* <br />
-              <div className="content">Tags: {minute.tags}</div> */}
             </div>
           </div>
         );
