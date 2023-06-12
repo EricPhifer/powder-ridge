@@ -110,6 +110,7 @@ export default function HomePage() {
       homepage: allSanityHomepage {
         nodes {
           id
+          welcome
           contents {
             content
             contentURL
@@ -121,7 +122,6 @@ export default function HomePage() {
             }
             ...ImageWithPreview
           }
-          welcome
         }
       }
     }
@@ -157,3 +157,5 @@ export default function HomePage() {
     </>
   );
 }
+
+export const Head = () => <title>Powder Ridge HOA - Home</title>;

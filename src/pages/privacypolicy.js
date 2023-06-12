@@ -1,8 +1,7 @@
-import { defaultComponents, PortableText } from '@portabletext/react'
-import { graphql, useStaticQuery } from 'gatsby'
-import React from 'react'
-import styled from 'styled-components'
-import Seo from '../components/seo'
+import { defaultComponents, PortableText } from '@portabletext/react';
+import { graphql, useStaticQuery } from 'gatsby';
+import React from 'react';
+import styled from 'styled-components';
 
 const PolicyStyles = styled.div`
   word-wrap: break-word;
@@ -34,7 +33,7 @@ const PolicyStyles = styled.div`
   @media only screen and (max-width: 900px) {
     padding-top: 9rem;
   }
-`
+`;
 
 export default function PrivacyPolicy() {
   const { policies } = useStaticQuery(graphql`
@@ -47,27 +46,24 @@ export default function PrivacyPolicy() {
         }
       }
     }
-  `)
-  const { nodes } = policies
+  `);
+  const { nodes } = policies;
   return (
-    <>
-      <Seo title="Privacy Policy" />
-      <PolicyStyles>
-        <div className="overlord">
-          {nodes.map(policy => (
-            <section key={policy.id}>
-              <h1>{policy.title}</h1>
-              <section className="policyContainer">
-                <PortableText
-                  value={policy._rawContent}
-                  components={defaultComponents}
-                  className="answer flex"
-                />
-              </section>
+    <PolicyStyles>
+      <div className="overlord">
+        {nodes.map((policy) => (
+          <section key={policy.id}>
+            <h1>{policy.title}</h1>
+            <section className="policyContainer">
+              <PortableText
+                value={policy._rawContent}
+                components={defaultComponents}
+                className="answer flex"
+              />
             </section>
-          ))}
-        </div>
-      </PolicyStyles>
-    </>
-  )
+          </section>
+        ))}
+      </div>
+    </PolicyStyles>
+  );
 }

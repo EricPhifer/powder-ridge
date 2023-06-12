@@ -1,8 +1,7 @@
-import { defaultComponents, PortableText } from '@portabletext/react'
-import { graphql, useStaticQuery } from 'gatsby'
-import React from 'react'
-import styled from 'styled-components'
-import Seo from '../components/seo'
+import { defaultComponents, PortableText } from '@portabletext/react';
+import { graphql, useStaticQuery } from 'gatsby';
+import React from 'react';
+import styled from 'styled-components';
 
 const TermStyles = styled.div`
   word-wrap: break-word;
@@ -32,7 +31,7 @@ const TermStyles = styled.div`
   @media only screen and (max-width: 900px) {
     padding-top: 9rem;
   }
-`
+`;
 
 export default function TermsConditions() {
   const { terms } = useStaticQuery(graphql`
@@ -45,26 +44,23 @@ export default function TermsConditions() {
         }
       }
     }
-  `)
-  const { nodes } = terms
+  `);
+  const { nodes } = terms;
   return (
-    <>
-      <Seo title="Terms &amp; Conditions" />
-      <TermStyles>
-        <div className="overlord">
-          {nodes.map(term => (
-            <section key={term.id}>
-              <h1>{term.title}</h1>
-              <section className="termsContainer">
-                <PortableText
-                  value={term._rawContent}
-                  components={defaultComponents}
-                />
-              </section>
+    <TermStyles>
+      <div className="overlord">
+        {nodes.map((term) => (
+          <section key={term.id}>
+            <h1>{term.title}</h1>
+            <section className="termsContainer">
+              <PortableText
+                value={term._rawContent}
+                components={defaultComponents}
+              />
             </section>
-          ))}
-        </div>
-      </TermStyles>
-    </>
-  )
+          </section>
+        ))}
+      </div>
+    </TermStyles>
+  );
 }
