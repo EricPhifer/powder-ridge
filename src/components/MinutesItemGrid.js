@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
+import { PortableText, defaultComponents } from '@portabletext/react';
 import formatMoney from '../utils/formatMoney';
 
 const GridStyles = styled.div`
@@ -151,8 +152,8 @@ export default function MinutesItemGrid() {
             }
           }
           name
-          newBusiness
-          oldBusiness
+          _rawNewBusiness
+          _rawOldBusiness
           tags
           teleconference
         }
@@ -239,20 +240,18 @@ export default function MinutesItemGrid() {
               <div className="content">
                 <strong>Old Business:</strong>
                 <br />{' '}
-                {minute.oldBusiness.map((oldBiz) => (
-                  <div key={oldBiz.id} className="oldBiz">
-                    {oldBiz}
-                  </div>
-                ))}
+                <PortableText
+                  value={minute._rawOldBusiness}
+                  components={defaultComponents}
+                />
               </div>
               <br />
               <div className="content">
                 <strong>New Business:</strong> <br />
-                {minute.newBusiness.map((newBiz) => (
-                  <div key={newBiz.id} className="newBiz">
-                    {newBiz}
-                  </div>
-                ))}
+                <PortableText
+                  value={minute._rawNewBusiness}
+                  components={defaultComponents}
+                />
               </div>
               <br />
               <div className="content">Meeting ended at: {endMDT}</div>

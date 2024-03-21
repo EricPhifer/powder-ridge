@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import SanityImage from 'gatsby-plugin-sanity-image';
 import styled from 'styled-components';
+import { PortableText, defaultComponents } from '@portabletext/react';
 import useForm from '../utils/useForm';
 import useContact from '../utils/useContact';
 
@@ -264,7 +265,7 @@ export default function BoardMembers() {
       members: allSanityBoardMembers {
         nodes {
           name
-          description
+          _rawDescription
           email
           id
           phone
@@ -281,7 +282,7 @@ export default function BoardMembers() {
         nodes {
           id
           email
-          description
+          _rawDescription
           chairman
           name
           phone
@@ -350,7 +351,12 @@ export default function BoardMembers() {
           <div className="card">
             <div className="memberName">{member.name}</div>
             <div className="position">{member.position}</div>
-            <div className="description">{member.description}</div>
+            <div className="description">
+              <PortableText
+                value={member._rawDescription}
+                components={defaultComponents}
+              />
+            </div>{' '}
           </div>
         </MemberStyles>
       ))}
@@ -375,22 +381,11 @@ export default function BoardMembers() {
                   }}
                 />
               </div>
-              <div>
-                <strong>Chairman of the committee:</strong> {committee.chairman}
-              </div>
-              <div>
-                <strong>What is the purpose of the committee?</strong> <br />
-                {committee.description}
-              </div>
-              <div>
-                <strong>Who are the members of the committee?</strong> <br />
-                {committee.members.map((member) => member).join(', ')}
-              </div>
+              <PortableText
+                value={committee._rawDescription}
+                components={defaultComponents}
+              />
               <div className="contact">
-                <strong>How do I contact the committee?</strong>{' '}
-                <div className="container">
-                  Use the form below and select "Committee Chairman"
-                </div>
                 <div className="container">
                   <button
                     type="button"
@@ -422,7 +417,6 @@ export default function BoardMembers() {
           <input type="hidden" name="form-name" value="contact" />
           <fieldset>
             <legend>Contact Us</legend>
-
             <label htmlFor="name" className="nameLabel">
               Name
             </label>

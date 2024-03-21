@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const PolicyStyles = styled.div`
+  max-width: 700px;
   word-wrap: break-word;
   p {
     padding: 0.5rem 0;
@@ -21,7 +22,7 @@ const PolicyStyles = styled.div`
   h1 {
     text-align: center;
   }
-  .policyContainer {
+  .policiesContainer {
     max-width: 600px;
     margin: 0 auto;
     padding: 0 1rem;
@@ -54,7 +55,7 @@ export default function PrivacyPolicy() {
         {nodes.map((policy) => (
           <section key={policy.id}>
             <h1>{policy.title}</h1>
-            <section className="policyContainer">
+            <section className="policiesContainer">
               <PortableText
                 value={policy._rawContent}
                 components={defaultComponents}

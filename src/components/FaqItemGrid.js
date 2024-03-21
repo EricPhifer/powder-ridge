@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
+import { PortableText, defaultComponents } from '@portabletext/react';
 import { ItemStyles } from '../styles/PageCardStyles';
 
 const FAQGridStyles = styled.div``;
@@ -12,7 +13,7 @@ export default function FaqItemGrid() {
         nodes {
           id
           question
-          answer
+          _rawAnswer
         }
       }
     }
@@ -24,7 +25,12 @@ export default function FaqItemGrid() {
         {allFaqs.map((faq) => (
           <div className="card" key={faq.id}>
             <div className="title">{faq.question}</div>
-            <div className="content">{faq.answer}</div>
+            <div className="content">
+              <PortableText
+                value={faq._rawAnswer}
+                components={defaultComponents}
+              />
+            </div>{' '}
           </div>
         ))}
       </ItemStyles>
