@@ -117,7 +117,7 @@ const TreasurerStyles = styled.div`
 export default function MinutesItemGrid() {
   const { minutes } = useStaticQuery(graphql`
     query {
-      minutes: allSanityMinutes {
+      minutes: allSanityMinutes(sort: { endTime: DESC }) {
         nodes {
           contributors
           endTime(formatString: "h:mma MM/dd/yyyy")
