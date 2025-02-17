@@ -317,6 +317,7 @@ export default function BoardMembers() {
     formName: '',
     name: '',
     email: '',
+    contacting: '',
   });
   const { contact, error, loading, errMessage, submitContact } = useContact({
     values,
@@ -327,14 +328,14 @@ export default function BoardMembers() {
   }
 
   function changeFormName(event) {
-    const name = `Contact-for-${event.target.value}`;
-    const e = {
+    const selectedValue = event.target.value;
+    const formName = `Contact-for-${selectedValue}`;
+    updateValue({
       target: {
         name: 'formName',
-        value: name,
+        value: formName,
       },
-    };
-    updateValue(e);
+    });
   }
 
   return (
@@ -438,6 +439,7 @@ export default function BoardMembers() {
           netlify-honeypot="bot-field"
         >
           <input type="hidden" name="bot-field" />
+          <input type="hidden" name="subject" value="Contact from Website" />
           <input
             type="hidden"
             name="form-name"
@@ -483,11 +485,17 @@ export default function BoardMembers() {
             </label>
             <select
               name="contacting"
-              id="contactList"
-              onChange={changeFormName}
+              id="contacting"
+              value={values.contacting}
+              onChange={(e) => {
+                updateValue(e);
+                changeFormName(e);
+              }}
               required
             >
-              <option value="WhoToContact">Who Are You Contacting?</option>
+              <option value="" disabled>
+                Who Are You Contacting?
+              </option>
               <option value="President">President</option>
               <option value="Secretary">Secretary</option>
               <option value="VicePresident">Vice President</option>
