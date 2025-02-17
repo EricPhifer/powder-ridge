@@ -429,16 +429,20 @@ export default function BoardMembers() {
       </CommitteesStyles>
       <FormStyles>
         <form
+          name={values.formName ? values.formName : 'contact'}
           className="container"
           id="formContainer"
           method="post"
           // eslint-disable-next-line
           netlify-honeypot="bot-field"
           data-netlify="true"
-          name="contact"
         >
           <input type="hidden" name="bot-field" />
-          <input type="hidden" name="form-name" value="contact" />
+          <input
+            type="hidden"
+            name="form-name"
+            value={values.formName ? values.formName : 'contact'}
+          />
           <fieldset>
             <legend>Contact Us</legend>
             <label htmlFor="name" className="nameLabel">
