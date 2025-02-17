@@ -4,7 +4,6 @@ import SanityImage from 'gatsby-plugin-sanity-image';
 import styled from 'styled-components';
 import { PortableText, defaultComponents } from '@portabletext/react';
 import useForm from '../utils/useForm';
-import useContact from '../utils/useContact';
 
 const HeroStyles = styled.div`
   width: 100vw;
@@ -318,12 +317,6 @@ export default function BoardMembers() {
     name: '',
     email: '',
   });
-  const { errMessage } = useContact({
-    values,
-  });
-  if (errMessage) {
-    return <p>{errMessage}</p>;
-  }
 
   function changeFormName(event) {
     const selectedValue = event.target.value;
@@ -427,7 +420,7 @@ export default function BoardMembers() {
       </CommitteesStyles>
       <FormStyles>
         <form
-          name={values.formName ? values.formName : 'contact'}
+          name={values.formName ? values.formName : 'Contact-for-President'}
           method="post"
           data-netlify="true"
           className="container"
@@ -440,8 +433,9 @@ export default function BoardMembers() {
           <input
             type="hidden"
             name="form-name"
-            value={values.formName ? values.formName : 'contact'}
+            value={values.formName ? values.formName : 'Contact-for-President'}
           />
+          <pre>{values.formName}</pre>
           <fieldset>
             <legend>Contact Us</legend>
             <label htmlFor="name" className="nameLabel">
@@ -478,7 +472,7 @@ export default function BoardMembers() {
               placeholder="Reason for contacting?"
             />
             <label htmlFor="contacting" className="contactingLabel">
-              Contacting:
+              Who are you contacting?
             </label>
             <select
               name="contacting"
@@ -486,9 +480,6 @@ export default function BoardMembers() {
               onChange={changeFormName}
               required
             >
-              <option value="" disabled selected>
-                Who Are You Contacting?
-              </option>
               <option value="President">President</option>
               <option value="Secretary">Secretary</option>
               <option value="VicePresident">Vice President</option>

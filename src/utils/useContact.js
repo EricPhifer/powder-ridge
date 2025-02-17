@@ -9,7 +9,6 @@ export default function useContact({ values }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    // setMessage('Enjoy your pizza!');
     // Gather data to send
     const body = {
       name: values.name,
@@ -17,7 +16,6 @@ export default function useContact({ values }) {
       message: values.message,
       mapleSyrup: values.mapleSyrup,
     };
-    // Send data to serverless function when they check out
     const res = await fetch(
       `${process.env.GATSBY_SERVERLESS_BASE}/contactMember`,
       {
