@@ -486,7 +486,6 @@ export default function BoardMembers() {
             <select
               name="contacting"
               id="contacting"
-              value={values.contacting}
               onChange={(e) => {
                 updateValue(e);
                 changeFormName(e);
