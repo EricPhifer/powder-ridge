@@ -314,6 +314,7 @@ export default function BoardMembers() {
   const heroes = hero.nodes;
 
   const { values, updateValue } = useForm({
+    formName: '',
     name: '',
     email: '',
   });
