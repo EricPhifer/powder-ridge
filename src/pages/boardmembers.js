@@ -319,14 +319,14 @@ export default function BoardMembers() {
   });
 
   function changeFormName(event) {
-    const selectedValue = event.target.value;
-    const formName = `Contact-for-${selectedValue}`;
-    updateValue({
+    const name = `Contact-for-${event.target.value}`;
+    const e = {
       target: {
         name: 'formName',
-        value: formName,
+        value: name,
       },
-    });
+    };
+    updateValue(e);
   }
 
   return (
@@ -421,7 +421,7 @@ export default function BoardMembers() {
       <FormStyles>
         <form
           name={values.formName ? values.formName : 'Contact-for-President'}
-          method="post"
+          method="POST"
           data-netlify="true"
           className="container"
           id="formContainer"
