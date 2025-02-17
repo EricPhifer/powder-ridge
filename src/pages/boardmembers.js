@@ -430,12 +430,12 @@ export default function BoardMembers() {
       <FormStyles>
         <form
           name={values.formName ? values.formName : 'contact'}
+          method="post"
+          data-netlify="true"
           className="container"
           id="formContainer"
-          method="post"
           // eslint-disable-next-line
           netlify-honeypot="bot-field"
-          data-netlify="true"
         >
           <input type="hidden" name="bot-field" />
           <input
@@ -482,11 +482,10 @@ export default function BoardMembers() {
               Contacting:
             </label>
             <select
-              type="contacting"
               name="contacting"
-              value={values.contacting}
-              onChange={changeFormName}
               id="contactList"
+              onChange={changeFormName}
+              required
             >
               <option value="WhoToContact">Who Are You Contacting?</option>
               <option value="President">President</option>
