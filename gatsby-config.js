@@ -56,7 +56,7 @@ module.exports = {
       options: {
         host: 'https://powderridgegrandmesa.com',
         sitemap: 'https://powderridgegrandmesa.com/sitemap/sitemap-index.xml',
-        policy: [{ userAgent: `*`, allow: `/` }],
+        policy: [{ userAgent: `*`, allow: `/`, disallow: '/login/*' }],
       },
     },
     {

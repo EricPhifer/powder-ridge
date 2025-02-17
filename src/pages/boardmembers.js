@@ -204,17 +204,26 @@ const FormStyles = styled.div`
   max-width: 1200px;
   margin: 5rem auto;
   display: flex;
+  form {
+    padding: 2rem;
+  }
   legend {
     font-size: 3rem;
+    padding-bottom: 2rem;
+    font-variant: small-caps;
+  }
+  label {
+    font-size: 1.75rem;
   }
   input,
   textarea {
     width: 99%;
+    border: 1px solid black;
   }
   input,
   textarea,
   select {
-    margin: 5px 0;
+    margin: 10px 0;
     padding: 10px 0 10px 10px;
   }
   .hide {
@@ -222,7 +231,8 @@ const FormStyles = styled.div`
   }
   select,
   button {
-    width: 100%;
+    width: 99%;
+    border: 1px solid black;
   }
   select {
     color: #7c7c7c;
