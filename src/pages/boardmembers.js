@@ -317,12 +317,10 @@ export default function BoardMembers() {
     formName: '',
     name: '',
     email: '',
-    contacting: '',
   });
-  const { contact, error, loading, errMessage, submitContact } = useContact({
+  const { errMessage } = useContact({
     values,
   });
-  console.log(contact, error, loading, submitContact);
   if (errMessage) {
     return <p>{errMessage}</p>;
   }
@@ -394,7 +392,6 @@ export default function BoardMembers() {
             <div className="committeeContainer" key={committee.id}>
               <h2>{committee.name}</h2>
               <div className="committeeImage">
-                {console.log(committee)}
                 <SanityImage
                   {...committee.image}
                   alt={committee.name}
@@ -486,13 +483,10 @@ export default function BoardMembers() {
             <select
               name="contacting"
               id="contacting"
-              onChange={(e) => {
-                updateValue(e);
-                changeFormName(e);
-              }}
+              onChange={changeFormName}
               required
             >
-              <option value="" disabled>
+              <option value="" disabled selected>
                 Who Are You Contacting?
               </option>
               <option value="President">President</option>
