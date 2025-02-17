@@ -240,6 +240,7 @@ const FormStyles = styled.div`
   .submitButton {
     max-width: 800px;
     margin-top: 1.5rem auto;
+    font-size: 2.5rem;
   }
   @media (max-width: 400px) {
     input,
@@ -323,6 +324,18 @@ export default function BoardMembers() {
   if (errMessage) {
     return <p>{errMessage}</p>;
   }
+
+  function changeFormName(event) {
+    const name = `Contact-for-${event.target.value}`;
+    const e = {
+      target: {
+        name: 'formName',
+        value: name,
+      },
+    };
+    updateValue(e);
+  }
+
   return (
     <>
       {heroes.map((hiro) => (
@@ -467,7 +480,7 @@ export default function BoardMembers() {
               type="contacting"
               name="contacting"
               value={values.contacting}
-              onChange={updateValue}
+              onChange={changeFormName}
               id="contactList"
             >
               <option value="WhoToContact">Who Are You Contacting?</option>
@@ -489,7 +502,7 @@ export default function BoardMembers() {
               placeholder="What question or message do you have?"
             />
             <button type="submit" className="submitButton" value="Submit">
-              Submit Message
+              Submit
             </button>
           </fieldset>
         </form>
