@@ -420,7 +420,7 @@ export default function BoardMembers() {
       </CommitteesStyles>
       <FormStyles>
         <form
-          name={values.formName ? values.formName : 'Contact-for-Secretary'}
+          name={values.formName ? values.formName : 'Contact-for-Chair'}
           method="POST"
           data-netlify="true"
           className="container"
@@ -433,7 +433,7 @@ export default function BoardMembers() {
           <input
             type="hidden"
             name="form-name"
-            value={values.formName ? values.formName : 'Contact-for-Secretary'}
+            value={values.formName ? values.formName : 'Contact-for-Chair'}
           />
           <fieldset>
             <legend>Contact Us</legend>
